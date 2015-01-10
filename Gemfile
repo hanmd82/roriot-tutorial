@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.2.0'
 
+# # Gems bundled as default
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 gem 'bootstrap-sass', '3.2.0.0'
@@ -30,6 +31,10 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+# # Gems used by application
+gem 'active_model_serializers', '~> 0.8.3'
+gem 'annotate', '~> 2.6.5'
 
 group :development, :test do
   # Use mysql as the database for Active Record

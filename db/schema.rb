@@ -11,6 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20150110045628) do
+
+  create_table "nodes", force: :cascade do |t|
+    t.integer  "guid",        limit: 4
+    t.string   "label",       limit: 255
+    t.decimal  "lat",                       precision: 9, scale: 6
+    t.decimal  "lng",                       precision: 9, scale: 6
+    t.text     "description", limit: 65535
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+  end
+
+  add_index "nodes", ["guid"], name: "index_nodes_on_guid", unique: true, using: :btree
 
 end

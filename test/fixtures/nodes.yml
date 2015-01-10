@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  guid:        1
+  label:       Node 1
+  lat:         1.404321
+  lng:         103.792937
+  description: Node Description 1
+
+two:
+  guid:        2
+  label:       Node 2
+  lat:         1.404331
+  lng:         103.792947
+  description: Node Description 2
+
+# == Schema Information
+#
+# Table name: nodes
+#
+#  id          :integer          not null, primary key
+#  guid        :integer
+#  label       :string(255)
+#  lat         :decimal(9, 6)
+#  lng         :decimal(9, 6)
+#  description :text(65535)
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#
