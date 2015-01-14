@@ -2,6 +2,12 @@ Rails.application.routes.draw do
   root          'static_pages#home'
   get 'help' => 'static_pages#help'
 
+  namespace :api, :defaults => {:format => :json} do
+    namespace :v1 do
+      resources :nodes, only: [:index]
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
