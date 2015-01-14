@@ -31,4 +31,23 @@ class API::V1::NodesControllerTest < ActionController::TestCase
       assert nodes.all? {|node| node.key?("#{attr}")}
     end
   end
+
+
+  # GET /nodes/id
+  test "GET show should be successful" do
+    get :show, id: @node.id
+
+    assert_response :success
+    assert_not_nil assigns(:node)
+  end
+
+  test "GET show should return the correct JSON" do
+    get :show, id: @node.id
+
+    body = JSON.parse(response.body)
+    assert_includes body, "node"
+
+    node = body['node']
+    assert_equal @node.guid, node['guid']
+  end
 end
