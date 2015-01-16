@@ -42,6 +42,25 @@ class API::V1::NodesControllerTest < ActionController::TestCase
     assert_equal @node.guid, nodes.first['guid']
   end
 
+  test "GET index with multiple GUIDs should return only the correct nodes" do
+    zoo_node = @node
+    night_safari_node = Node.create!(guid: 1102, label: "Node 1102 (Singapore Night Safari)", lat: 1.404322, lng: 103.792938, description: "This is the node with GUID 1102 at the Singapore Night Safari")
+
+    valid_guids_list   = [zoo_node.guid, night_safari_node.guid]
+    invalid_guids_list = [100, 200, 300]
+    guids_query_list   = (valid_guids_list + invalid_guids_list).map(&:to_s).join(",")
+
+    get :index, guid: guids_query_list
+
+    body = JSON.parse(response.body)
+    nodes = body['nodes']
+    response_node_guids = nodes.collect{ |n| n['guid'] }
+
+    assert_equal 2, nodes.length
+    assert valid_guids_list.all? { |guid| response_node_guids.include?(guid) }
+    assert_not invalid_guids_list.any? { |guid| response_node_guids.include?(guid) }
+  end
+
 
   # GET /nodes/id
   test "GET show should be successful" do

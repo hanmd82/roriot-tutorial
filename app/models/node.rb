@@ -5,7 +5,7 @@ class Node < ActiveRecord::Base
   validates :lat, presence: true
   validates :lng, presence: true
 
-  scope :filter_by_guid, -> (guid) { where(guid: guid) if guid }
+  scope :filter_by_guid, -> (guids) { where(guid: guids.split(",")) if guids }
 end
 
 # == Schema Information
