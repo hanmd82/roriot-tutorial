@@ -32,6 +32,16 @@ class API::V1::NodesControllerTest < ActionController::TestCase
     end
   end
 
+  test "GET index with GUID of one node should return the correct node" do
+    get :index, guid: @node.guid
+
+    body = JSON.parse(response.body)
+    nodes = body['nodes']
+
+    assert_equal 1, nodes.length
+    assert_equal @node.guid, nodes.first['guid']
+  end
+
 
   # GET /nodes/id
   test "GET show should be successful" do
