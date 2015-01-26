@@ -6,6 +6,8 @@ class Node < ActiveRecord::Base
   validates :lng, presence: true
 
   scope :filter_by_guid, -> (guids) { where(guid: guids.split(",")) if guids }
+
+  has_many :measurements
 end
 
 # == Schema Information

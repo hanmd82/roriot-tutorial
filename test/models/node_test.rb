@@ -10,6 +10,7 @@ class NodeTest < ActiveSupport::TestCase
     assert @node.valid?
   end
 
+  # model validations
   test "guid should be present" do
     @node.guid = nil
     assert_not @node.valid?
@@ -29,6 +30,13 @@ class NodeTest < ActiveSupport::TestCase
     duplicate_node = @node.dup
     @node.save
     assert_not duplicate_node.valid?
+  end
+
+  # associations
+  test "should respond to measurements" do
+    @node.save!
+    @node.measurements.build(type: "TemperatureMeasurement", node_guid: @node.guid, recorded_at: Time.now.to_i, sequence_number: 1, data: "one")
+    assert_respond_to @node, :measurements
   end
 end
 

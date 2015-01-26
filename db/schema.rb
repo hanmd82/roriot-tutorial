@@ -11,7 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150110045628) do
+ActiveRecord::Schema.define(version: 20150126081230) do
+
+  create_table "measurements", force: :cascade do |t|
+    t.string   "type",            limit: 255
+    t.integer  "node_id",         limit: 4
+    t.integer  "node_guid",       limit: 4
+    t.integer  "recorded_at",     limit: 4
+    t.integer  "sequence_number", limit: 4
+    t.text     "data",            limit: 65535
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "measurements", ["node_id", "recorded_at"], name: "index_measurements_on_node_id_and_recorded_at", using: :btree
+  add_index "measurements", ["node_id"], name: "index_measurements_on_node_id", using: :btree
 
   create_table "nodes", force: :cascade do |t|
     t.integer  "guid",        limit: 4
@@ -25,4 +39,5 @@ ActiveRecord::Schema.define(version: 20150110045628) do
 
   add_index "nodes", ["guid"], name: "index_nodes_on_guid", unique: true, using: :btree
 
+  add_foreign_key "measurements", "nodes"
 end
