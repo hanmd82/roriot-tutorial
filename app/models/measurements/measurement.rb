@@ -2,6 +2,8 @@ class Measurement < ActiveRecord::Base
   validates_presence_of :node_id, :node_guid, :recorded_at, :data
 
   belongs_to :node
+
+  default_scope -> { order(recorded_at: :desc) }
 end
 
 # == Schema Information

@@ -36,6 +36,10 @@ class MeasurementTest < ActiveSupport::TestCase
   test "should respond to node" do
     assert_respond_to @measurement, :node
   end
+
+  test "order should be most recent first" do
+    assert_equal Measurement.first, measurements(:most_recent)
+  end
 end
 
 # == Schema Information
