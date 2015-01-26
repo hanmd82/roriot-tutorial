@@ -3,7 +3,7 @@ require 'test_helper'
 class API::V1::NodesControllerTest < ActionController::TestCase
 
   def setup
-    @node = Node.create!(guid: 1101, label: "Node 1101 (Singapore Zoo)", lat: 1.404321, lng: 103.792937, description: "This is the node with GUID 1101 at the Singapore Zoo")
+    @node = nodes(:one)
   end
 
   # GET /nodes
@@ -21,7 +21,7 @@ class API::V1::NodesControllerTest < ActionController::TestCase
     assert_includes body, "nodes"
 
     nodes = body['nodes']
-    assert_equal 3, nodes.length
+    assert_equal 2, nodes.length
 
     [:id, :created_at, :updated_at].each do |attr|
       assert_not nodes.any? {|node| node.key?("#{attr}")}
@@ -44,7 +44,7 @@ class API::V1::NodesControllerTest < ActionController::TestCase
 
   test "GET index with multiple GUIDs should return only the correct nodes" do
     zoo_node = @node
-    night_safari_node = Node.create!(guid: 1102, label: "Node 1102 (Singapore Night Safari)", lat: 1.404322, lng: 103.792938, description: "This is the node with GUID 1102 at the Singapore Night Safari")
+    night_safari_node = nodes(:two)
 
     valid_guids_list   = [zoo_node.guid, night_safari_node.guid]
     invalid_guids_list = [100, 200, 300]

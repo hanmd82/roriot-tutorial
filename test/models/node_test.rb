@@ -3,7 +3,7 @@ require 'test_helper'
 class NodeTest < ActiveSupport::TestCase
 
   def setup
-    @node = Node.new(guid: 1101, label: "Node 1101 (Singapore Zoo)", lat: 1.404321, lng: 103.792937, description: "This is the node with GUID 1101 at the Singapore Zoo")
+    @node = Node.new(guid: 1103, label: "Node 1103 (Singapore Zoo)", lat: 1.404321, lng: 103.792937, description: "This is the node with GUID 1103 at the Singapore Zoo")
   end
 
   test "should be valid" do
