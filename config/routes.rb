@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :api, :defaults => {:format => :json} do
     namespace :v1 do
       resources :nodes, only: [:index, :show]
+      resources :measurements, only: [:index]
     end
   end
 

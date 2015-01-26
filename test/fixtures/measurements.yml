@@ -2,27 +2,27 @@
 
 one:
   type: TemperatureMeasurement
-  node_id: 1
-  node_guid: 1
   recorded_at: <%= 20.minutes.ago.to_i %>
-  sequence_number: 1
+  sequence_number: 2
   data: "MyText 1"
+  node: one
+  node_guid: 1101
 
 two:
   type: TemperatureMeasurement
-  node_id: 1
-  node_guid: 1
   recorded_at: <%= 2.hours.ago.to_i %>
   sequence_number: 1
   data: "MyText 2"
+  node: one
+  node_guid: 1101
 
 most_recent:
   type: TemperatureMeasurement
-  node_id: 1
-  node_guid: 1
   recorded_at: <%= Time.zone.now.to_i %>
   sequence_number: 1
   data: "My Most Recent Text"
+  node: two
+  node_guid: 1102
 
 # == Schema Information
 #
