@@ -24,6 +24,22 @@ most_recent:
   node: two
   node_guid: 1102
 
+accel3_one:
+  type: AccelerometerMeasurement
+  recorded_at: <%= 2.hours.ago.to_i %>
+  sequence_number: 1
+  data: '{ "accel_x" : "-2496", "accel_y" : "64", "accel_z" : "6656" }'
+  node: two
+  node_guid: 1102
+
+accel3_two:
+  type: AccelerometerMeasurement
+  recorded_at: <%= 2.hours.ago.to_i %>
+  sequence_number: 2
+  data: '{ "accel_x" : "-2496", "accel_y" : "-192", "accel_z" : "6784" }'
+  node: two
+  node_guid: 1102
+
 # == Schema Information
 #
 # Table name: measurements
