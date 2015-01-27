@@ -4,7 +4,7 @@ one:
   type: TemperatureMeasurement
   recorded_at: <%= 20.minutes.ago.to_i %>
   sequence_number: 2
-  data: "MyText 1"
+  data: '{ "temperature" : "37.0" }'
   node: one
   node_guid: 1101
 
@@ -12,7 +12,7 @@ two:
   type: TemperatureMeasurement
   recorded_at: <%= 2.hours.ago.to_i %>
   sequence_number: 1
-  data: "MyText 2"
+  data: '{ "temperature" : "37.1" }'
   node: one
   node_guid: 1101
 
@@ -20,7 +20,7 @@ most_recent:
   type: TemperatureMeasurement
   recorded_at: <%= Time.zone.now.to_i %>
   sequence_number: 1
-  data: "My Most Recent Text"
+  data: '{ "temperature" : "36.5" }'
   node: two
   node_guid: 1102
 

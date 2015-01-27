@@ -1,4 +1,5 @@
 class Measurement < ActiveRecord::Base
+  serialize :data, JSON
   validates_presence_of :node_id, :node_guid, :recorded_at, :data
 
   belongs_to :node

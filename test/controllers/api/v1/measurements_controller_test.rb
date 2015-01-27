@@ -19,11 +19,11 @@ class API::V1::MeasurementsControllerTest < ActionController::TestCase
     measurements = body['measurements']
     assert_equal 3, measurements.length
 
-    [:id, :created_at, :updated_at, :node_id].each do |attr|
+    [:id, :created_at, :updated_at, :node_id, :data].each do |attr|
       assert_not measurements.any? {|m| m.key?("#{attr}")}
     end
 
-    [:type, :node_guid, :recorded_at, :sequence_number, :data].each do |attr|
+    [:type, :node_guid, :recorded_at, :sequence_number].each do |attr|
       assert measurements.all? {|m| m.key?("#{attr}")}
     end
   end
