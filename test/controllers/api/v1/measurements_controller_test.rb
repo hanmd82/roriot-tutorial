@@ -96,4 +96,49 @@ class API::V1::MeasurementsControllerTest < ActionController::TestCase
 
     assert_equal 2, measurements.length
   end
+
+  test "GET index should filter records after specified 'from' timestamp" do
+    get :index, from: 30.minutes.ago.to_i
+
+    body = JSON.parse(response.body)
+    measurements = body['measurements']
+
+    assert_equal 2, measurements.length
+  end
+
+  test "GET index should filter records between specified 'from' and 'to' timestamps" do
+    get :index, from: 3.hours.ago.to_i, to: 10.minutes.ago.to_i
+
+    body = JSON.parse(response.body)
+    measurements = body['measurements']
+
+    assert_equal 4, measurements.length
+  end
+
+  test "GET index should not support queries with missing 'from' timestamp" do
+    get :index, to: 10.minutes.ago.to_i
+
+    body = JSON.parse(response.body)
+    measurements = body['measurements']
+
+    assert_equal 0, measurements.length
+  end
+
+  test "GET index should filter records earlier than specified 'before' timestamp" do
+    get :index, before: 10.minutes.ago.to_i
+
+    body = JSON.parse(response.body)
+    measurements = body['measurements']
+
+    assert_equal 4, measurements.length
+  end
+
+  test "GET index should filter records from the specified 'recent' timestamp window in seconds" do
+    get :index, recent: 5 * 60
+
+    body = JSON.parse(response.body)
+    measurements = body['measurements']
+
+    assert_equal 1, measurements.length
+  end
 end
