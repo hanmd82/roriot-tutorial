@@ -8,6 +8,7 @@ class Measurement < ActiveRecord::Base
 
   default_scope -> { order(recorded_at: :desc) }
   scope :filter_by_type, -> (m_type) { where(type: "#{m_type.camelize}Measurement") if m_type }
+  scope :filter_by_node_guid, -> (node_guid) { where(node_guid: node_guid) if node_guid }
 
   def self.has_type?(m_type); MEASUREMENT_TYPES.include?(m_type.capitalize); end
 end

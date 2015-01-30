@@ -78,4 +78,22 @@ class API::V1::MeasurementsControllerTest < ActionController::TestCase
 
     assert measurements.all? { |m| m['type'] == "AccelerometerMeasurement" }
   end
+
+  test "GET index should filter queries by node GUID" do
+    get :index, node_guid: 1102
+
+    body = JSON.parse(response.body)
+    measurements = body['measurements']
+
+    assert_equal 3, measurements.length
+  end
+
+  test "GET index should filter queries by only the first node's GUID" do
+    get :index, node_guid: "1101,1102"
+
+    body = JSON.parse(response.body)
+    measurements = body['measurements']
+
+    assert_equal 2, measurements.length
+  end
 end
