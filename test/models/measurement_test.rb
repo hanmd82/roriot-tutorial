@@ -2,43 +2,49 @@ require 'test_helper'
 
 class MeasurementTest < ActiveSupport::TestCase
 
-  def setup
-    @node = nodes(:one)
-    @measurement = @node.measurements.build(type: "TemperatureMeasurement", node_guid: @node.guid, recorded_at: Time.now.to_i, sequence_number: 1, data: "one")
-  end
+  context "Measurement" do
+    setup do
+      @node = nodes(:one)
+      @measurement = @node.measurements.build(type: "TemperatureMeasurement", node_guid: @node.guid, recorded_at: Time.now.to_i, sequence_number: 1, data: "one")
+    end
 
-  test "should be valid" do
-    assert @measurement.valid?
-  end
+    context "validations" do
+      should "be valid by default" do
+        assert @measurement.valid?
+      end
 
-  # model validations
-  test "node_id should be present" do
-    @measurement.node_id = nil
-    assert_not @measurement.valid?
-  end
+      should "ensure presence of node_id" do
+        @measurement.node_id = nil
+        assert_not @measurement.valid?
+      end
 
-  test "node_guid should be present" do
-    @measurement.node_guid = nil
-    assert_not @measurement.valid?
-  end
+      should "ensure presence of node_guid" do
+        @measurement.node_guid = nil
+        assert_not @measurement.valid?
+      end
 
-  test "recorded_at should be present" do
-    @measurement.recorded_at = nil
-    assert_not @measurement.valid?
-  end
+      should "ensure presence of recorded_at" do
+        @measurement.recorded_at = nil
+        assert_not @measurement.valid?
+      end
 
-  test "data should be present" do
-    @measurement.data = nil
-    assert_not @measurement.valid?
-  end
+      should "ensure presence of data" do
+        @measurement.data = nil
+        assert_not @measurement.valid?
+      end
+    end
 
-  # associations
-  test "should respond to node" do
-    assert_respond_to @measurement, :node
-  end
 
-  test "order should be most recent first" do
-    assert_equal Measurement.first, measurements(:most_recent)
+    context "associations" do
+      should "respond to node" do
+        assert_respond_to @measurement, :node
+      end
+    end
+
+
+    should "return most recent record first" do
+      assert_equal Measurement.first, measurements(:most_recent)
+    end
   end
 end
 

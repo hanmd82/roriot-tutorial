@@ -2,81 +2,86 @@ require 'test_helper'
 
 class API::V1::NodesControllerTest < ActionController::TestCase
 
-  def setup
-    @node = nodes(:one)
-  end
-
   # GET /nodes
-  test "GET index should be successful" do
-    get :index
+  context "GET index" do
+    should "be successful" do
+      get :index
 
-    assert_response :success
-    assert_not_nil assigns(:nodes)
-  end
-
-  test "GET index should return the correct JSON" do
-    get :index
-
-    body = JSON.parse(response.body)
-    assert_includes body, "nodes"
-
-    nodes = body['nodes']
-    assert_equal 2, nodes.length
-
-    [:id, :created_at, :updated_at].each do |attr|
-      assert_not nodes.any? {|node| node.key?("#{attr}")}
+      assert_response :success
+      assert_not_nil assigns(:nodes)
     end
 
-    [:guid, :label, :lat, :lng, :description].each do |attr|
-      assert nodes.all? {|node| node.key?("#{attr}")}
+    should "return the correct JSON" do
+      get :index
+
+      body = JSON.parse(response.body)
+      assert_includes body, "nodes"
+
+      nodes = body['nodes']
+      assert_equal 2, nodes.length
+
+      [:id, :created_at, :updated_at].each do |attr|
+        assert_not nodes.any? {|node| node.key?("#{attr}")}
+      end
+
+      [:guid, :label, :lat, :lng, :description].each do |attr|
+        assert nodes.all? {|node| node.key?("#{attr}")}
+      end
     end
-  end
 
-  test "GET index with GUID of one node should return the correct node" do
-    get :index, guid: @node.guid
+    should "should return the correct node" do
+      @node = nodes(:one)
+      get :index, guid: @node.guid
 
-    body = JSON.parse(response.body)
-    nodes = body['nodes']
+      body = JSON.parse(response.body)
+      nodes = body['nodes']
 
-    assert_equal 1, nodes.length
-    assert_equal @node.guid, nodes.first['guid']
-  end
+      assert_equal 1, nodes.length
+      assert_equal @node.guid, nodes.first['guid']
+    end
 
-  test "GET index with multiple GUIDs should return only the correct nodes" do
-    zoo_node = @node
-    night_safari_node = nodes(:two)
+    should "return only the correct nodes when given multiple GUIDs" do
+      zoo_node = nodes(:one)
+      night_safari_node = nodes(:two)
 
-    valid_guids_list   = [zoo_node.guid, night_safari_node.guid]
-    invalid_guids_list = [100, 200, 300]
-    guids_query_list   = (valid_guids_list + invalid_guids_list).map(&:to_s).join(",")
+      valid_guids_list   = [zoo_node.guid, night_safari_node.guid]
+      invalid_guids_list = [100, 200, 300]
+      guids_query_list   = (valid_guids_list + invalid_guids_list).map(&:to_s).join(",")
 
-    get :index, guid: guids_query_list
+      get :index, guid: guids_query_list
 
-    body = JSON.parse(response.body)
-    nodes = body['nodes']
-    response_node_guids = nodes.collect{ |n| n['guid'] }
+      body = JSON.parse(response.body)
+      nodes = body['nodes']
+      response_node_guids = nodes.collect{ |n| n['guid'] }
 
-    assert_equal 2, nodes.length
-    assert valid_guids_list.all? { |guid| response_node_guids.include?(guid) }
-    assert_not invalid_guids_list.any? { |guid| response_node_guids.include?(guid) }
+      assert_equal 2, nodes.length
+      assert valid_guids_list.all? { |guid| response_node_guids.include?(guid) }
+      assert_not invalid_guids_list.any? { |guid| response_node_guids.include?(guid) }
+    end
   end
 
 
   # GET /nodes/id
-  test "GET show should be successful" do
-    get :show, id: @node.id
+  context "GET show" do
+    setup do
+      @node = nodes(:one)
+    end
 
-    assert_response :success
-    assert_not_nil assigns(:node)
-  end
+    should "be successful" do
+      get :show, id: @node.id
 
-  test "GET show should return the correct JSON" do
-    get :show, id: @node.id
+      assert_response :success
+      assert_not_nil assigns(:node)
+    end
 
-    body = JSON.parse(response.body)
-    assert_includes body, "node"
+    should "return the correct JSON" do
+      get :show, id: @node.id
 
-    node = body['node']
-    assert_equal @node.guid, node['guid']
+      body = JSON.parse(response.body)
+      assert_includes body, "node"
+
+      node = body['node']
+      assert_equal @node.guid, node['guid']
+    end
   end
 end

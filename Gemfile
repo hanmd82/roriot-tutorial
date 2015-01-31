@@ -36,6 +36,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'active_model_serializers', '~> 0.8.3'
 gem 'annotate', '~> 2.6.5'
 gem 'will_paginate', '~> 3.0.7'
+gem 'shoulda-context', '~> 1.2.1'
 
 group :development, :test do
   # Use mysql as the database for Active Record

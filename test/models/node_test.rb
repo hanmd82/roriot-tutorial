@@ -2,41 +2,47 @@ require 'test_helper'
 
 class NodeTest < ActiveSupport::TestCase
 
-  def setup
-    @node = Node.new(guid: 1103, label: "Node 1103 (Singapore Zoo)", lat: 1.404321, lng: 103.792937, description: "This is the node with GUID 1103 at the Singapore Zoo")
-  end
+  context "Node" do
+    setup do
+      @node = Node.new(nodes(:two).attributes.except('id', 'created_at', 'updated_at').merge({"guid" => 1103}))
+    end
 
-  test "should be valid" do
-    assert @node.valid?
-  end
+    context "validations" do
+      should "be valid by default" do
+        assert @node.valid?
+      end
 
-  # model validations
-  test "guid should be present" do
-    @node.guid = nil
-    assert_not @node.valid?
-  end
+      should "ensure presence of guid" do
+        @node.guid = nil
+        assert_not @node.valid?
+      end
 
-  test "lat should be present" do
-    @node.lat = nil
-    assert_not @node.valid?
-  end
+      should "ensure presence of lat" do
+        @node.lat = nil
+        assert_not @node.valid?
+      end
 
-  test "lng should be present" do
-    @node.lng = nil
-    assert_not @node.valid?
-  end
+      should "ensure presence of lng" do
+        @node.lng = nil
+        assert_not @node.valid?
+      end
 
-  test "guid should be unique" do
-    duplicate_node = @node.dup
-    @node.save
-    assert_not duplicate_node.valid?
-  end
+      should "ensure uniqueness of guid" do
+        duplicate_node = @node.dup
+        @node.save
+        assert_not duplicate_node.valid?
+      end
+    end
 
-  # associations
-  test "should respond to measurements" do
-    @node.save!
-    @node.measurements.build(type: "TemperatureMeasurement", node_guid: @node.guid, recorded_at: Time.now.to_i, sequence_number: 1, data: "one")
-    assert_respond_to @node, :measurements
+
+    context "associations" do
+      should "respond to measurements" do
+        @node.save!
+        @node.measurements.build(type: "TemperatureMeasurement", node_guid: @node.guid, recorded_at: Time.now.to_i, sequence_number: 1, data: "one")
+        assert_respond_to @node, :measurements
+      end
+    end
+
   end
 end
 
