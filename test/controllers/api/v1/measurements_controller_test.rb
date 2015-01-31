@@ -141,4 +141,39 @@ class API::V1::MeasurementsControllerTest < ActionController::TestCase
 
     assert_equal 1, measurements.length
   end
+
+  test "GET index should return pages of 25 records by default" do
+    35.times { |n| Measurement.create!(measurements(:accel3_two).attributes.except('id', 'created_at', 'updated_at').merge({"recorded_at" => Time.now.to_i, "sequence_number" => n})) }
+
+    get :index
+
+    body = JSON.parse(response.body)
+    measurements = body['measurements']
+
+    assert_equal 25, measurements.length
+    assert_equal 1102, measurements.collect{|m| m['node_guid']}.uniq.first
+  end
+
+  test "GET index should return the specified number of records per page" do
+    35.times { |n| Measurement.create!(measurements(:accel3_two).attributes.except('id', 'created_at', 'updated_at').merge({"recorded_at" => Time.now.to_i, "sequence_number" => n})) }
+
+    get :index, per_page: 20
+
+    body = JSON.parse(response.body)
+    measurements = body['measurements']
+
+    assert_equal 20, measurements.length
+  end
+
+  test "GET index should return the specified page of records" do
+    35.times { |n| Measurement.create!(measurements(:accel3_two).attributes.except('id', 'created_at', 'updated_at').merge({"recorded_at" => Time.now.to_i, "sequence_number" => n})) }
+
+    get :index, page: 2
+
+    body = JSON.parse(response.body)
+    measurements = body['measurements']
+
+    assert_equal 15, measurements.length
+    assert_equal 1101, measurements.collect{|m| m['node_guid']}.uniq.last
+  end
 end

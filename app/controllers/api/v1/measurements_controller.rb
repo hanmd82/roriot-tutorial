@@ -6,6 +6,7 @@ class API::V1::MeasurementsController < ApplicationController
                                  .filter_by_time_window(params[:from], params[:to])
                                  .filter_by_cutoff_time(params[:before])
                                  .filter_by_most_recent(params[:recent])
+                                 .paginate(page: params[:page], per_page: params[:per_page] || 25)
 
       render json: @measurements, each_serializer: MeasurementSerializer
     else
