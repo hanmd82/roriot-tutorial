@@ -188,4 +188,64 @@ class API::V1::MeasurementsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  context "POST create" do
+    setup do
+      @attr = measurements(:accel3_two).attributes.except('id', 'node_id', 'created_at', 'updated_at').merge({"recorded_at" => Time.now.to_i})
+    end
+
+    context "when invalid" do
+      context "with missing parameters" do
+        setup do
+          @attr.each{ |k,v| @attr[k] = nil }
+        end
+
+        should "not create a new record" do
+          assert_no_difference 'Measurement.count' do
+            post :create, measurement: @attr
+          end
+        end
+
+        should "render error message" do
+          post :create, measurement: @attr
+
+          body = JSON.parse(response.body)
+          assert_includes body['node_guid'], "can't be blank"
+        end
+      end
+
+
+    end
+
+    context "when valid" do
+      should "be successful" do
+        post :create, measurement: @attr
+
+        assert_response :success
+      end
+
+      should "create a new measurement" do
+        assert_difference 'Measurement.count', 1 do
+          post :create, measurement: @attr
+        end
+      end
+
+      should "return the right JSON with serialized attributes as top-level JSON keys" do
+        post :create, measurement: @attr
+
+        body = JSON.parse(response.body)
+        assert_includes body, "measurement"
+
+        measurement = body["measurement"]
+
+        [:id, :created_at, :updated_at, :node_id, :data].each do |attr|
+          assert_not_includes measurement, "#{attr}"
+        end
+
+        [:type, :node_guid, :recorded_at, :sequence_number, :accel_x, :accel_y, :accel_z].each do |attr|
+          assert_includes measurement, "#{attr}"
+        end
+      end
+    end
+  end
 end

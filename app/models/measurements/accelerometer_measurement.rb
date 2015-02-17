@@ -1,4 +1,5 @@
 class AccelerometerMeasurement < Measurement
+  SPECIAL_SERIALIZED_PARAMS = [:accel_x, :accel_y, :accel_z]
 end
 
 # == Schema Information

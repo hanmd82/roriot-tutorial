@@ -1,4 +1,5 @@
 class TemperatureMeasurement < Measurement
+  SPECIAL_SERIALIZED_PARAMS = [:temperature]
 end
 
 # == Schema Information

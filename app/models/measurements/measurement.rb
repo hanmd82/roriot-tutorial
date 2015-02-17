@@ -1,5 +1,6 @@
 class Measurement < ActiveRecord::Base
   MEASUREMENT_TYPES = ["Temperature", "Accelerometer"]
+  COMMON_PARAMS = [:type, :node_guid, :recorded_at, :sequence_number]
 
   serialize :data, JSON
   validates_presence_of :node_id, :node_guid, :recorded_at, :data
@@ -15,6 +16,7 @@ class Measurement < ActiveRecord::Base
   scope :filter_by_most_recent, -> (time_window_in_seconds) { where("recorded_at > ?", (Time.now - time_window_in_seconds.to_i.seconds).to_i) if time_window_in_seconds }
 
   def self.has_type?(m_type); MEASUREMENT_TYPES.include?(m_type.capitalize); end
+  def self.all_serialized_params; MEASUREMENT_TYPES.map{|m| "#{m}Measurement::SPECIAL_SERIALIZED_PARAMS".constantize}.flatten; end
 end
 
 # == Schema Information
